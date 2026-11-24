@@ -1,0 +1,7 @@
+# File sementara simulasi xsim
+results/xsim.dir/
+results/*.log
+results/*.jou
+results/*.pb
+results/sim_*.txt
+.Xil/
