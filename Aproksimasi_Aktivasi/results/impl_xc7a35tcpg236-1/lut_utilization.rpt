@@ -1,14 +1,14 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2026.1 (win64) Build 6511674 Tue Jun 16 11:02:23 MDT 2026
-| Date         : Tue Nov 24 22:07:10 2026
+| Date         : Tue Nov 24 22:21:31 2026
 | Host         : 22036-Nara running 64-bit major release  (build 9200)
-| Command      : report_utilization -file C:/Users/andhi/Documents/GitHub/pemrograman_zynq/Aproksimasi_Aktivasi/results/impl_xc7a35tcpg236-1/lut_utilization.rpt
-| Design       : axis_nn
+| Command      : report_utilization -cells [get_cells dut] -file C:/Users/andhi/Documents/GitHub/pemrograman_zynq/Aproksimasi_Aktivasi/results/impl_xc7a35tcpg236-1/lut_utilization.rpt
+| Design       : axis_nn_ooc
 | Device       : xc7a35tcpg236-1
 | Speed File   : -1
 | Design State : Routed
------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Utilization Design Information
 
@@ -19,12 +19,11 @@ Table of Contents
 2. Slice Logic Distribution
 3. Memory
 4. DSP
-5. IO and GT Specific
-6. Clocking
-7. Specific Feature
-8. Primitives
-9. Black Boxes
-10. Instantiated Netlists
+5. Clocking
+6. Specific Feature
+7. Primitives
+8. Black Boxes
+9. Instantiated Netlists
 
 1. Slice Logic
 --------------
@@ -32,8 +31,8 @@ Table of Contents
 +----------------------------+------+-------+------------+-----------+-------+
 |          Site Type         | Used | Fixed | Prohibited | Available | Util% |
 +----------------------------+------+-------+------------+-----------+-------+
-| Slice LUTs                 |  789 |     0 |          0 |     20800 |  3.79 |
-|   LUT as Logic             |  777 |     0 |          0 |     20800 |  3.74 |
+| Slice LUTs                 |  790 |     0 |          0 |     20800 |  3.80 |
+|   LUT as Logic             |  778 |     0 |          0 |     20800 |  3.74 |
 |   LUT as Memory            |   12 |     0 |          0 |      9600 |  0.13 |
 |     LUT as Distributed RAM |    0 |     0 |            |           |       |
 |     LUT as Shift Register  |   12 |     0 |            |           |       |
@@ -73,13 +72,13 @@ Table of Contents
 +--------------------------------------------+------+-------+------------+-----------+-------+
 |                  Site Type                 | Used | Fixed | Prohibited | Available | Util% |
 +--------------------------------------------+------+-------+------------+-----------+-------+
-| Slice                                      |  305 |     0 |          0 |      8150 |  3.74 |
-|   SLICEL                                   |  213 |     0 |            |           |       |
-|   SLICEM                                   |   92 |     0 |            |           |       |
-| LUT as Logic                               |  777 |     0 |          0 |     20800 |  3.74 |
+| Slice                                      |  301 |     0 |          0 |      8150 |  3.69 |
+|   SLICEL                                   |  181 |     0 |            |           |       |
+|   SLICEM                                   |  120 |     0 |            |           |       |
+| LUT as Logic                               |  778 |     0 |          0 |     20800 |  3.74 |
 |   using O5 output only                     |    0 |       |            |           |       |
-|   using O6 output only                     |  613 |       |            |           |       |
-|   using O5 and O6                          |  164 |       |            |           |       |
+|   using O6 output only                     |  615 |       |            |           |       |
+|   using O5 and O6                          |  163 |       |            |           |       |
 | LUT as Memory                              |   12 |     0 |          0 |      9600 |  0.13 |
 |   LUT as Distributed RAM                   |    0 |     0 |            |           |       |
 |     using O5 output only                   |    0 |       |            |           |       |
@@ -90,10 +89,10 @@ Table of Contents
 |     using O6 output only                   |    4 |       |            |           |       |
 |     using O5 and O6                        |    8 |       |            |           |       |
 | Slice Registers                            |  791 |     0 |          0 |     41600 |  1.90 |
-|   Register driven from within the Slice    |  520 |       |            |           |       |
-|   Register driven from outside the Slice   |  271 |       |            |           |       |
-|     LUT in front of the register is unused |  181 |       |            |           |       |
-|     LUT in front of the register is used   |   90 |       |            |           |       |
+|   Register driven from within the Slice    |  514 |       |            |           |       |
+|   Register driven from outside the Slice   |  277 |       |            |           |       |
+|     LUT in front of the register is unused |  206 |       |            |           |       |
+|     LUT in front of the register is used   |   71 |       |            |           |       |
 +--------------------------------------------+------+-------+------------+-----------+-------+
 
 
@@ -123,32 +122,7 @@ Table of Contents
 +----------------+------+-------+------------+-----------+-------+
 
 
-5. IO and GT Specific
----------------------
-
-+-----------------------------+------+-------+------------+-----------+-------+
-|          Site Type          | Used | Fixed | Prohibited | Available | Util% |
-+-----------------------------+------+-------+------------+-----------+-------+
-| Bonded IOB                  |    0 |     0 |          0 |       106 |  0.00 |
-| Bonded IPADs                |    0 |     0 |          0 |        10 |  0.00 |
-| Bonded OPADs                |    0 |     0 |          0 |         4 |  0.00 |
-| PHY_CONTROL                 |    0 |     0 |          0 |         5 |  0.00 |
-| PHASER_REF                  |    0 |     0 |          0 |         5 |  0.00 |
-| OUT_FIFO                    |    0 |     0 |          0 |        20 |  0.00 |
-| IN_FIFO                     |    0 |     0 |          0 |        20 |  0.00 |
-| IDELAYCTRL                  |    0 |     0 |          0 |         5 |  0.00 |
-| IBUFDS                      |    0 |     0 |          0 |       104 |  0.00 |
-| GTPE2_CHANNEL               |    0 |     0 |          0 |         2 |  0.00 |
-| PHASER_OUT/PHASER_OUT_PHY   |    0 |     0 |          0 |        20 |  0.00 |
-| PHASER_IN/PHASER_IN_PHY     |    0 |     0 |          0 |        20 |  0.00 |
-| IDELAYE2/IDELAYE2_FINEDELAY |    0 |     0 |          0 |       250 |  0.00 |
-| IBUFDS_GTE2                 |    0 |     0 |          0 |         2 |  0.00 |
-| ILOGIC                      |    0 |     0 |          0 |       106 |  0.00 |
-| OLOGIC                      |    0 |     0 |          0 |       106 |  0.00 |
-+-----------------------------+------+-------+------------+-----------+-------+
-
-
-6. Clocking
+5. Clocking
 -----------
 
 +------------+------+-------+------------+-----------+-------+
@@ -164,7 +138,7 @@ Table of Contents
 +------------+------+-------+------------+-----------+-------+
 
 
-7. Specific Feature
+6. Specific Feature
 -------------------
 
 +-------------+------+-------+------------+-----------+-------+
@@ -182,7 +156,7 @@ Table of Contents
 +-------------+------+-------+------------+-----------+-------+
 
 
-8. Primitives
+7. Primitives
 -------------
 
 +----------+------+---------------------+
@@ -206,7 +180,7 @@ Table of Contents
 +----------+------+---------------------+
 
 
-9. Black Boxes
+8. Black Boxes
 --------------
 
 +----------+------+
@@ -214,8 +188,8 @@ Table of Contents
 +----------+------+
 
 
-10. Instantiated Netlists
--------------------------
+9. Instantiated Netlists
+------------------------
 
 +----------+------+
 | Ref Name | Used |

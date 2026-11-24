@@ -3,6 +3,9 @@
 #   lut    : pynq_part_4/nn.v + sigmoid Full LUT 256 (asli)
 #   interp : ann/nn.v + sigmoid_interp (LUT 33 + interpolasi)
 # Tidak butuh board: out-of-context berarti tidak ada pin I/O fisik.
+# Top-level adalah ann/axis_nn_ooc.v (timing harness): semua port axis_nn diberi
+# register, port top-level di-false-path, sehingga timing yang dilaporkan adalah
+# jalur register -> register. Resource diambil dari instance "dut" (axis_nn saja).
 #
 # Jalankan dari folder Aproksimasi_Aktivasi:
 #   vivado -mode batch -nojournal -nolog -source scripts/impl.tcl -tclargs <part>
@@ -18,7 +21,7 @@ set p4   [file join $repo pynq_part_4]
 set out  [file join $root results impl_$part]
 file mkdir $out
 
-set common [list $p4/register.v $p4/pe.v $p4/systolic.v $p4/axis_nn.v]
+set common [list $p4/register.v $p4/pe.v $p4/systolic.v $p4/axis_nn.v $root/ann/axis_nn_ooc.v]
 set variants [dict create \
     lut    [list $p4/sigmoid.v $p4/nn.v] \
     interp [list $root/rtl/sigmoid_interp.v $root/ann/nn.v]]
@@ -30,28 +33,28 @@ dict for {v files} $variants {
     close_project -quiet
     create_project -in_memory -part $part
     read_verilog [concat $common $files]
-    synth_design -top axis_nn -part $part -mode out_of_context
+    synth_design -top axis_nn_ooc -part $part -mode out_of_context
 
     create_clock -name aclk -period $period [get_ports aclk]
-    # OOC: clock dimodelkan berasal dari BUFG (seperti FCLK_CLK0 Zynq), bukan
-    # langsung dari port. Tanpa ini, skew clock ~1 ns memunculkan hold violation
-    # palsu pada jalur port -> register.
+    # OOC: clock dimodelkan berasal dari BUFG (seperti FCLK_CLK0 Zynq)
     set_property HD.CLK_SRC BUFGCTRL_X0Y0 [get_ports aclk]
-    set_input_delay  0 -clock aclk [get_ports -filter {DIRECTION == IN && NAME != aclk}]
-    set_output_delay 0 -clock aclk [all_outputs]
+    # Port top-level hanya milik harness, bukan bagian desain
+    set_false_path -from [get_ports -filter {DIRECTION == IN && NAME != aclk}]
+    set_false_path -to   [all_outputs]
 
     opt_design
     place_design
     phys_opt_design
     route_design
 
-    report_utilization    -file [file join $out ${v}_utilization.rpt]
+    report_utilization    -file [file join $out ${v}_utilization_total.rpt]
+    report_utilization -cells [get_cells dut] -file [file join $out ${v}_utilization.rpt]
     report_utilization -hierarchical -file [file join $out ${v}_utilization_hier.rpt]
     report_timing_summary -file [file join $out ${v}_timing.rpt]
     report_power          -file [file join $out ${v}_power.rpt]
     write_checkpoint -force [file join $out ${v}_routed.dcp]
 
-    # Angka resource diambil dari laporan utilization (Slice LUTs, dst.)
+    # Angka resource axis_nn (instance dut) dari laporan utilization
     set fp [open [file join $out ${v}_utilization.rpt] r]
     set ut [read $fp]
     close $fp

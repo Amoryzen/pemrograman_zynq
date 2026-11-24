@@ -71,8 +71,21 @@ Hasil simulasi ANN (`results/ann_compare.md`):
   Kelas output tidak berubah.
 - Waveform: `results/ann_waveform_interp.png` dan `results/ann_waveform_lut.png`.
 
-Place & route ANN lengkap (top `axis_nn`, out-of-context) ada di
-`results/impl_<part>/summary.csv`. Presentasi ada di `presentasi/`.
+### Place & route ANN lengkap (`axis_nn`, OOC, `xc7a35tcpg236-1`, 100 MHz)
+
+| Metrik | Full LUT (asli) | LUT 33 + interp |
+|---|---|---|
+| LUT / FF | 790 / 791 | 896 / 857 |
+| DSP48 / BRAM tile | 16 / 8.5 | 20 / 8.5 |
+| WNS / WHS | 1.772 / 0.027 ns | 1.719 / 0.019 ns |
+| Fmax (perkiraan) | 121.5 MHz | 120.8 MHz |
+| Latency satu inferensi | 33 clk | 34 clk |
+
+PnR memakai `ann/axis_nn_ooc.v` sebagai timing harness. Harness ini memberi register
+pada semua port dan memodelkan clock dari BUFG, sehingga yang diukur adalah jalur
+register → register seperti saat tersambung ke DMA Zynq. Resource di tabel adalah
+milik `axis_nn` saja. Laporan lengkap ada di `results/impl_<part>/`. Presentasi ada di
+`presentasi/`.
 
 ## Cara menjalankan
 
