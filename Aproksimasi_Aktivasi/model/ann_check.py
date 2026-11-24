@@ -123,7 +123,7 @@ def plot_waveform(v, title):
     clk = [t for t, val in sig["clk"] if val == 1]
     period = clk[1] - clk[0]
     t_start = next(t for t, val in sig["start"] if val == 1)
-    t_done = next(t for t, val in sig["dut.done"] if val == 1)
+    t_done = next(t for t, val in sig["done"] if val == 1)
     t0 = t_start - period
     t1 = t_done + 2 * period
 

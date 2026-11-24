@@ -1,0 +1,118 @@
+[*]
+[*] GTKWave view for the ANN simulation (Aproksimasi_Aktivasi)
+[*] Open: gtkwave nn_wave.vcd nn_wave.gtkw -S nn_wave_zoom.tcl
+[*]
+[dumpfile] "nn_wave.vcd"
+[timestart] 180000
+[size] 1500 860
+[pos] 0 0
+*-8.374747 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] nn_ann_tb.
+[treeopen] nn_ann_tb.dut.
+[sst_width] 1
+[signals_width] 250
+[sst_expanded] 0
+[sst_vpaned_height] 0
+@800200
+-1. Control
+@28
+nn_ann_tb.clk
+@28
+nn_ann_tb.rst_n
+[color] 2
+@28
+nn_ann_tb.start
+@28
+nn_ann_tb.ready
+@24
+nn_ann_tb.dut.cnt_main_reg[5:0]
+[color] 2
+@28
+nn_ann_tb.done
+@1000200
+-1. Control
+@800200
+-2. Systolic (z = W.x + b)
+@28
+nn_ann_tb.dut.sys_in_valid
+[color] 4
+@28
+nn_ann_tb.dut.sys_out_valid
+[color] 4
+@420
+nn_ann_tb.z0_real
+@420
+nn_ann_tb.z1_real
+@420
+nn_ann_tb.z2_real
+@420
+nn_ann_tb.z3_real
+@420
+nn_ann_tb.dut.y0[15:0]
+@1000200
+-2. Systolic (z = W.x + b)
+@800200
+-3. Sigmoid (a = sigma(z))
+[color] 4
+@28
+nn_ann_tb.dut.sig_out_valid
+[color] 3
+@420
+nn_ann_tb.a0_real
+@420
+nn_ann_tb.a1_real
+@420
+nn_ann_tb.a2_real
+@420
+nn_ann_tb.a3_real
+@24
+nn_ann_tb.dut.s0[15:0]
+@1000200
+-3. Sigmoid (a = sigma(z))
+@800200
+-4. Inside sigmoid_0 (pipeline)
+@200
+-  din = y0 (Q6.10)
+@420
+nn_ann_tb.dut.sigmoid_0.din[15:0]
+@22
+nn_ann_tb.dut.sigmoid_0.addr[7:0]
+@200
+-  dout = s0
+[color] 3
+@24
+nn_ann_tb.dut.sigmoid_0.dout[15:0]
+@1000200
+-4. Inside sigmoid_0 (pipeline)
+@800200
+-5. Feedback layer 1 -> layer 2
+@24
+nn_ann_tb.dut.b00_reg[15:0]
+@24
+nn_ann_tb.dut.b10_reg[15:0]
+@24
+nn_ann_tb.dut.b20_reg[15:0]
+@24
+nn_ann_tb.dut.b30_reg[15:0]
+@1000200
+-5. Feedback layer 1 -> layer 2
+@800200
+-6. Output BRAM
+[color] 1
+@28
+nn_ann_tb.dut.a_ena
+@24
+nn_ann_tb.dut.a_addra[1:0]
+@22
+nn_ann_tb.dut.a_dina[63:0]
+@28
+nn_ann_tb.a_enb
+@24
+nn_ann_tb.a_addrb[1:0]
+[color] 1
+@22
+nn_ann_tb.a_doutb[63:0]
+@1000200
+-6. Output BRAM
+[pattern_trace] 1
+[pattern_trace] 0

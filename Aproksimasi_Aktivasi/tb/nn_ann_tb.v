@@ -53,10 +53,40 @@ module nn_ann_tb();
 
     integer f_out, f_cyc, n_cyc;
 
+    // *** Nilai Q6.10 dalam bentuk real, supaya mudah dibaca di GTKWave/Surfer ***
+    real z0_real, z1_real, z2_real, z3_real;   // output systolic (pre-activation)
+    real a0_real, a1_real, a2_real, a3_real;   // output sigmoid (activation)
+    always @(dut.y0) z0_real = $itor($signed(dut.y0)) / 1024.0;
+    always @(dut.y1) z1_real = $itor($signed(dut.y1)) / 1024.0;
+    always @(dut.y2) z2_real = $itor($signed(dut.y2)) / 1024.0;
+    always @(dut.y3) z3_real = $itor($signed(dut.y3)) / 1024.0;
+    always @(dut.s0) a0_real = $itor(dut.s0) / 1024.0;
+    always @(dut.s1) a1_real = $itor(dut.s1) / 1024.0;
+    always @(dut.s2) a2_real = $itor(dut.s2) / 1024.0;
+    always @(dut.s3) a3_real = $itor(dut.s3) / 1024.0;
+
     initial
     begin
+        // *** VCD hanya berisi sinyal yang relevan (lihat README: daftar sinyal) ***
         $dumpfile("nn_wave.vcd");
-        $dumpvars(2, nn_ann_tb);   // sinyal tb + sinyal internal nn (dut)
+        // Kontrol
+        $dumpvars(0, clk, rst_n, start, ready, done);
+        $dumpvars(0, dut.cnt_main_reg);
+        // Systolic (pre-activation)
+        $dumpvars(0, dut.sys_in_valid, dut.sys_out_valid);
+        $dumpvars(0, dut.y0, dut.y1, dut.y2, dut.y3);
+        $dumpvars(0, z0_real, z1_real, z2_real, z3_real);
+        // Sigmoid (activation)
+        $dumpvars(0, dut.s0, dut.s1, dut.s2, dut.s3);
+        $dumpvars(0, a0_real, a1_real, a2_real, a3_real);
+        $dumpvars(0, dut.sig_out_valid);
+        // Umpan balik layer 1 -> layer 2 (register input stasioner systolic)
+        $dumpvars(0, dut.b00_reg, dut.b10_reg, dut.b20_reg, dut.b30_reg);
+        // Isi satu unit sigmoid (pipeline)
+        $dumpvars(1, dut.sigmoid_0);
+        // Output BRAM
+        $dumpvars(0, dut.a_ena, dut.a_addra, dut.a_dina);
+        $dumpvars(0, a_enb, a_addrb, a_doutb);
 
         en = 1; clr = 0; start = 0;
         wb_ena = 1; wb_addra = 0; wb_dina = 0; wb_wea = 0;

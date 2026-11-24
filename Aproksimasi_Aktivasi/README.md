@@ -69,7 +69,32 @@ Hasil simulasi ANN (`results/ann_compare.md`):
 - Simulasi versi Full LUT sama persis dengan output board PYNQ di `pynq_part_4/nn.ipynb`.
 - Error maksimum output terhadap ANN floating-point turun dari 0.0071 menjadi 0.0004.
   Kelas output tidak berubah.
-- Waveform: `results/ann_waveform_interp.png` dan `results/ann_waveform_lut.png`.
+- Waveform: lihat bagian Waveform di bawah (GTKWave), plus gambar ringkas `results/ann_waveform_*.png`.
+
+### Waveform (VCD untuk GTKWave / Surfer)
+
+Simulasi ANN menghasilkan `results/ann_<lut|interp>/nn_wave.vcd`. VCD ini hanya berisi
+sinyal yang relevan. Bus Q6.10 juga punya salinan bertipe `real` (`z*_real`, `a*_real`,
+nilai / 1024) yang dibuat di testbench, supaya langsung terbaca sebagai desimal.
+
+| Grup | Sinyal | Yang dicek |
+|---|---|---|
+| 1. Control | `clk`, `start`, `cnt_main_reg`, `done` | Counter jadwal 0 → 34; `done` = akhir satu inferensi |
+| 2. Systolic | `sys_out_valid`, `z0..z3_real` (`y0..y3`) | z untuk 4 sampel: layer 1 di cnt 13–15, layer 2 di cnt 28–29 |
+| 3. Sigmoid | `sig_out_valid`, `a0..a3_real` (`s0..s3`) | Aktivasi; harus tepat 2 clk setelah `sys_out_valid` |
+| 4. Inside sigmoid_0 | `din`, `i`, `f`, `t0p_r`, `d_r`, `f_r`, `dout` | Pipeline 2 tahap; satu nilai bisa dicek manual |
+| 5. Feedback | `b00_reg` .. `b30_reg` | Aktivasi layer 1 dipakai sebagai input layer 2 (cnt 17–19) |
+| 6. Output BRAM | `a_ena`, `a_addra`, `a_dina` | Output akhir ditulis ke BRAM di cnt 30–31 |
+
+Buka di GTKWave (dari `results/ann_interp/`):
+```
+gtkwave nn_wave.vcd nn_wave.gtkw -S nn_wave_zoom.tcl
+```
+File `.gtkw` memuat enam grup di atas. Tampilan ringkas `view_overview`, `view_layer1`,
+`view_pipeline`, dan `view_layer2` (masing-masing `.gtkw` + `.tcl`) dipakai untuk slide.
+Screenshot GTKWave ada di `results/ann_<versi>/screenshots/`. File `.gtkw` dibuat ulang
+dengan `python scripts/make_gtkw.py`. VCD-nya standar, jadi bisa juga dibuka di Surfer
+(sinyal ditambahkan manual).
 
 ### Place & route ANN lengkap (`axis_nn`, OOC, `xc7a35tcpg236-1`, 100 MHz)
 

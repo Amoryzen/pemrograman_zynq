@@ -1,0 +1,54 @@
+[*]
+[*] GTKWave view for the ANN simulation (Aproksimasi_Aktivasi)
+[*] Open: gtkwave nn_wave.vcd view_overview.gtkw -S view_overview.tcl
+[*]
+[dumpfile] "nn_wave.vcd"
+[timestart] 175000
+[size] 1500 495
+[pos] 0 0
+*-8.318894 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] nn_ann_tb.
+[treeopen] nn_ann_tb.dut.
+[sst_width] 1
+[signals_width] 250
+[sst_expanded] 0
+[sst_vpaned_height] 0
+@800200
+-1. Control
+@28
+nn_ann_tb.clk
+[color] 2
+@28
+nn_ann_tb.start
+@24
+nn_ann_tb.dut.cnt_main_reg[5:0]
+[color] 2
+@28
+nn_ann_tb.done
+@1000200
+-1. Control
+@800200
+-2. Systolic (z = W.x + b)
+@28
+nn_ann_tb.dut.sys_in_valid
+[color] 4
+@28
+nn_ann_tb.dut.sys_out_valid
+@1000200
+-2. Systolic (z = W.x + b)
+@800200
+-3. Sigmoid (a = sigma(z))
+[color] 4
+@28
+nn_ann_tb.dut.sig_out_valid
+@1000200
+-3. Sigmoid (a = sigma(z))
+@800200
+-6. Output BRAM
+[color] 1
+@28
+nn_ann_tb.dut.a_ena
+@1000200
+-6. Output BRAM
+[pattern_trace] 1
+[pattern_trace] 0
