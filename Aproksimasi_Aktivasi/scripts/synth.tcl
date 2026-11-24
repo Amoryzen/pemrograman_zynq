@@ -44,10 +44,14 @@ foreach {top file} $designs {
     report_timing_summary -file [file join $out ${top}_timing.rpt]
     report_power          -file [file join $out ${top}_power.rpt]
 
-    set lut  [llength [get_cells -quiet -hier -filter {PRIMITIVE_GROUP == LUT}]]
-    set ff   [llength [get_cells -quiet -hier -filter {PRIMITIVE_GROUP == FLOP_LATCH}]]
-    set dsp  [llength [get_cells -quiet -hier -filter {REF_NAME =~ DSP48*}]]
-    set bram [llength [get_cells -quiet -hier -filter {PRIMITIVE_GROUP == BLOCKRAM}]]
+    # Angka resource diambil dari laporan utilization (Slice LUTs, dst.)
+    set fp [open [file join $out ${top}_utilization.rpt] r]
+    set ut [read $fp]
+    close $fp
+    regexp {\|\s*Slice LUTs\*?\s*\|\s*([0-9]+)} $ut -> lut
+    regexp {\|\s*Slice Registers\s*\|\s*([0-9]+)} $ut -> ff
+    regexp {\|\s*DSPs\s*\|\s*([0-9]+)} $ut -> dsp
+    regexp {\|\s*Block RAM Tile\s*\|\s*([0-9.]+)} $ut -> bram
     set wns  [get_property SLACK [get_timing_paths -max_paths 1 -setup]]
     set fmax [format %.1f [expr {1000.0 / ($period - $wns)}]]
     set pwr  "?"

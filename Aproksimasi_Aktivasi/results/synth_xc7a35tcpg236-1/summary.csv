@@ -1,5 +1,5 @@
 module,LUT,FF,DSP,BRAM,WNS_ns,Fmax_MHz,total_power_W
-sigmoid,43,10,0,0,7.501,400.2,0.069
-sigmoid_hard,30,14,0,0,6.462,282.6,0.069
-sigmoid_plan,108,16,0,0,2.669,136.4,0.069
-sigmoid_interp,90,15,1,0,2.807,139.0,0.070
+sigmoid,39,10,0,0,7.501,400.2,0.069
+sigmoid_hard,17,14,0,0,6.462,282.6,0.069
+sigmoid_plan,98,16,0,0,2.669,136.4,0.069
+sigmoid_interp,77,15,1,0,2.807,139.0,0.070

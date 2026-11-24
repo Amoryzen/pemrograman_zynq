@@ -1,7 +1,9 @@
 # File sementara simulasi xsim
-results/xsim.dir/
-results/*.log
-results/*.jou
-results/*.pb
+**/xsim.dir/
+results/**/*.log
+results/**/*.jou
+results/**/*.pb
 results/sim_*.txt
+# Checkpoint Vivado (besar, bisa dibuat ulang dengan scripts/impl.tcl)
+results/**/*.dcp
 .Xil/

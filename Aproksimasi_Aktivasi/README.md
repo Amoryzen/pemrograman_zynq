@@ -48,6 +48,32 @@ Catatan:
   dipipeline menjadi 2 clk, dan penjumlahan + pembulatannya digabung ke dalam DSP
   (`P = C + A*B`).
 
+## Integrasi ke ANN
+
+Metode yang dipilih adalah **LUT 33 + interpolasi** karena error-nya paling kecil.
+Modul ini dipasang ke salinan `nn.v` di `ann/nn.v`; file asli di `pynq_part_4/` tidak
+diubah. Karena sigmoid baru 1 clk lebih lambat, ada beberapa penyesuaian:
+
+| Bagian | nn.v asli | ann/nn.v |
+|---|---|---|
+| Modul aktivasi | `sigmoid` (1 clk) | `sigmoid_interp` (2 clk) |
+| Umpan balik layer 1 → 2 | `s*_reg1` | `s*_reg0` (tetap tiba di cnt 16..18) |
+| Tulis output BRAM | cnt 29..30 | cnt 30..31 |
+| `done` | cnt 33 | cnt 34 |
+| `sig_out_valid` | tunda 1 clk | tunda 2 clk |
+
+`axis_nn.v` tidak perlu diubah karena FSM-nya menunggu `nn_ready`.
+
+Hasil simulasi ANN (`results/ann_compare.md`):
+- Output kedua versi cocok bit-exact dengan model Python (`model/ann_check.py`).
+- Simulasi versi Full LUT sama persis dengan output board PYNQ di `pynq_part_4/nn.ipynb`.
+- Error maksimum output terhadap ANN floating-point turun dari 0.0071 menjadi 0.0004.
+  Kelas output tidak berubah.
+- Waveform: `results/ann_waveform_interp.png` dan `results/ann_waveform_lut.png`.
+
+Place & route ANN lengkap (top `axis_nn`, out-of-context) ada di
+`results/impl_<part>/summary.csv`. Presentasi ada di `presentasi/`.
+
 ## Cara menjalankan
 
 Semua perintah dijalankan dari folder `Aproksimasi_Aktivasi`.
@@ -66,13 +92,23 @@ Semua perintah dijalankan dari folder `Aproksimasi_Aktivasi`.
    vivado -mode batch -nojournal -nolog -source scripts/synth.tcl -tclargs xc7z010clg400-1
    ```
    Ringkasannya ada di `results/synth_<part>/summary.csv`.
+4. **Simulasi ANN** (versi lama dan baru) + cek model + gambar waveform:
+   ```
+   powershell -ExecutionPolicy Bypass -File scripts/run_ann_sim.ps1
+   ```
+5. **Synthesis + place & route ANN lengkap** (versi lama dan baru):
+   ```
+   vivado -mode batch -nojournal -nolog -source scripts/impl.tcl -tclargs xc7z010clg400-1
+   ```
 
 ## Struktur
 
 ```
-rtl/      modul Verilog aproksimasi
-tb/       testbench sweep 65.536 input
-model/    golden model Python bit-exact + analisis error
-scripts/  run_sim.ps1 (xsim), synth.tcl (Vivado batch)
-results/  tabel error, grafik, laporan synthesis
+rtl/        modul Verilog aproksimasi
+ann/        nn.v dengan sigmoid_interp
+tb/         testbench sweep 65.536 input + testbench ANN
+model/      golden model Python bit-exact (sigmoid dan ANN) + analisis error
+scripts/    run_sim.ps1, run_ann_sim.ps1 (xsim), synth.tcl, impl.tcl (Vivado batch)
+results/    tabel error, grafik, waveform, laporan synthesis dan place & route
+presentasi/ slide untuk dikumpulkan
 ```
